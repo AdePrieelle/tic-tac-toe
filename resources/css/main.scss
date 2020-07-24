@@ -8,6 +8,161 @@ html {
   box-sizing: inherit;
 }
 
+@import 'partials/variables';
+
+body {
+	// background: linear-gradient(to top right, rgb(140, 255, 136), rgb(29, 191, 245));
+	background: $primary-bg-color;
+}
+
+.container {
+	max-width: 1192px;
+	padding: 0 30px;
+	margin: 0 auto;
+}
+
+header {
+	padding-top: 4rem;
+	display: flex;
+	justify-content: center;
+	.header-h1 {
+		text-align: center;
+		font-size: 3rem;
+		color: $primary-text-color;
+	}
+}
+
+button {
+	border: none;
+	border-radius: 50px;
+	background: $button-bg-color;
+	color: white;
+	cursor: pointer;
+}
+
+.play-against {
+	margin-top: 3.5rem;
+	display: flex;
+	justify-content: center;
+	button {
+		margin: 1rem;
+		padding: 10px 20px;
+		width: 100px;
+		display: flex;
+		justify-content: center;
+	}
+}
+
+.form-players {
+	margin-top: 3.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.form-players-fieldset {
+		display: flex;
+		flex-direction: column;
+		label {
+			margin-bottom: .6rem;
+			color: $secondary-text-color;
+			font-size: 1.2rem;
+		}
+		input {
+			border: none;
+			background-color: $primary-bg-color;
+			border-bottom: 1px solid $secondary-text-color;
+			padding: 2px;
+			font-size: 1rem;
+		}
+		input:not(:last-child) {
+			margin-bottom: 3rem;
+		}
+		input:last-child {
+			margin-bottom: 2rem;
+		}
+	}
+}
+
+.start-game-buttons {
+	display: flex;
+	justify-content: center;
+	margin-top: 1rem;
+	margin-bottom: 3rem;
+	button {
+		padding: 10px 20px;
+	}
+}
+
+.gameboard-grid {
+	display: grid;
+	justify-content: center;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 5px;
+	max-width: 400px;
+	margin: 0 auto;
+	margin-top: 2rem;
+	background-color: rgba(0, 0, 0, 0.212);
+	.gameboard-grid-item {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: $secondary-text-color;
+		background: $primary-bg-color;
+		font-size: 3rem;
+	}
+	// equal grid-item height to grid-item-width
+	.gameboard-grid-item::before {
+		content: "";
+		padding-bottom: 100%;
+		display: inline-block;
+		vertical-align: top;
+	}
+
+}
+
+.play-game-buttons {
+	display: flex;
+	flex-direction: column;
+	@media screen and (min-width: 580px) {
+		flex-direction: row;
+	}
+	justify-content: center;
+	align-items: center;
+	margin-top: 3rem;
+	button {
+		margin: 1rem;
+		padding: 12px 20px;
+		width: 120px;
+	}
+}
+
+.winner-game {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 3rem;
+	.winner-message {
+		margin-bottom: 2rem;
+		color: $secondary-text-color;
+		font-size: 3rem;
+		text-align: center;
+	}
+	.end-game-buttons {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		@media screen and (min-width: 580px) {
+			flex-direction: row;
+		}
+		button {
+			margin: 1rem;
+			padding: 12px 20px;
+			width: 120px;
+		}
+	}
+}
+
 
 
 /*

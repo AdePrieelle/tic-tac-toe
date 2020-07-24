@@ -51,6 +51,132 @@ html {
 *, *:before, *:after {
   box-sizing: inherit; }
 
+body {
+  background: #5cdb95; }
+
+.container {
+  max-width: 1192px;
+  padding: 0 30px;
+  margin: 0 auto; }
+
+header {
+  padding-top: 4rem;
+  display: flex;
+  justify-content: center; }
+  header .header-h1 {
+    text-align: center;
+    font-size: 3rem;
+    color: #edf5e1; }
+
+button {
+  border: none;
+  border-radius: 50px;
+  background: #ff8181;
+  color: white;
+  cursor: pointer; }
+
+.play-against {
+  margin-top: 3.5rem;
+  display: flex;
+  justify-content: center; }
+  .play-against button {
+    margin: 1rem;
+    padding: 10px 20px;
+    width: 100px;
+    display: flex;
+    justify-content: center; }
+
+.form-players {
+  margin-top: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+  .form-players .form-players-fieldset {
+    display: flex;
+    flex-direction: column; }
+    .form-players .form-players-fieldset label {
+      margin-bottom: .6rem;
+      color: #05386b;
+      font-size: 1.2rem; }
+    .form-players .form-players-fieldset input {
+      border: none;
+      background-color: #5cdb95;
+      border-bottom: 1px solid #05386b;
+      padding: 2px;
+      font-size: 1rem; }
+    .form-players .form-players-fieldset input:not(:last-child) {
+      margin-bottom: 3rem; }
+    .form-players .form-players-fieldset input:last-child {
+      margin-bottom: 2rem; }
+
+.start-game-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 3rem; }
+  .start-game-buttons button {
+    padding: 10px 20px; }
+
+.gameboard-grid {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 5px;
+  max-width: 400px;
+  margin: 0 auto;
+  margin-top: 2rem;
+  background-color: rgba(0, 0, 0, 0.212); }
+  .gameboard-grid .gameboard-grid-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #05386b;
+    background: #5cdb95;
+    font-size: 3rem; }
+  .gameboard-grid .gameboard-grid-item::before {
+    content: "";
+    padding-bottom: 100%;
+    display: inline-block;
+    vertical-align: top; }
+
+.play-game-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem; }
+  @media screen and (min-width: 580px) {
+    .play-game-buttons {
+      flex-direction: row; } }
+  .play-game-buttons button {
+    margin: 1rem;
+    padding: 12px 20px;
+    width: 120px; }
+
+.winner-game {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem; }
+  .winner-game .winner-message {
+    margin-bottom: 2rem;
+    color: #05386b;
+    font-size: 3rem;
+    text-align: center; }
+  .winner-game .end-game-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; }
+    @media screen and (min-width: 580px) {
+      .winner-game .end-game-buttons {
+        flex-direction: row; } }
+    .winner-game .end-game-buttons button {
+      margin: 1rem;
+      padding: 12px 20px;
+      width: 120px; }
+
 /*
 Start watching for compiling scss to css
 sass --watch main.scss:main.css

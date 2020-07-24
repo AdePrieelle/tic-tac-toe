@@ -9,11 +9,75 @@
     <title>Tic-Tac-Toe</title>
   </head>
   <body>
-    
-    
 
+    <div class="container">
+
+      <header>
+        <h1 class="header-h1">TIC TAC TOE</h1>
+      </header>
+  
+      <div class="play-against">
+        <button class="play-against-player">Player</button>
+        <button class="play-against-computer">Computer</button>
+      </div>
+  
+      <form class="form-players" action="">
+  
+        <fieldset class="form-players-fieldset">
+          <label for="player1">Player 1</label>
+          <input type="text" name="player1" id="player1">
+          <label for="player2">Player 2</label>
+          <input type="text" name="player2" id="player2">
+        </fieldset>
+  
+      </form>
+  
+      <div class="start-game-buttons">
+        <button class="start-game">Start Game</button>
+      </div>
+      
+      <div class="gameboard-grid">
+        <div class="gameboard-grid-item gridboard-item-0-0">X</div>
+        <div class="gameboard-grid-item gridboard-item-0-1">O</div>
+        <div class="gameboard-grid-item gridboard-item-0-2">0-2</div>
+        <div class="gameboard-grid-item gridboard-item-1-0">1-0</div>
+        <div class="gameboard-grid-item gridboard-item-1-1">1-1</div>
+        <div class="gameboard-grid-item gridboard-item-1-2">1-2</div>
+        <div class="gameboard-grid-item gridboard-item-2-0">2-0</div>
+        <div class="gameboard-grid-item gridboard-item-2-1">2-1</div>
+        <div class="gameboard-grid-item gridboard-item-2-2">2-2</div>
+      </div>
+  
+      <div class="play-game-buttons">
+        <button class="reset-game-round">Reset Round</button>
+        <button class="reset-game">Reset Game</button>
+        <button class="start-game">New Game</button>
+      </div>
+  
+      <div class="winner-game">
+        <div class="winner-message">Player 1 is the winner!</div>
+        <div class="end-game-buttons">
+          <button class="reset-game-round">New round</button>
+          <button class="reset-game">Reset Game</button>
+          <button class="start-game">New Game</button>
+        </div>
+      </div>
+
+    </div>
+    
   </body>
 </html>
+
+<!-- 
+      play vs player
+      play vs AI
+      input player1
+      input player2
+      start game
+      restart game
+      congratulate winning player
+      Make a tic-tac-toe grid
+     -->
 
 <!-- Attribute order
 
