@@ -16,7 +16,7 @@ body {
 }
 
 .container {
-	max-width: 1192px;
+	max-width: 600px;
 	padding: 0 30px;
 	margin: 0 auto;
 }
@@ -35,7 +35,8 @@ header {
 button {
 	border: none;
 	border-radius: 50px;
-	background: $button-bg-color;
+	border: 1px solid $primary-text-color;
+	background-color: $button-bg-color-secondary;
 	color: white;
 	cursor: pointer;
 }
@@ -50,11 +51,19 @@ button {
 		width: 100px;
 		display: flex;
 		justify-content: center;
+		color: $button-bg-color-secondary;
+		background-color: white;
+		border: 1px solid $button-bg-color-secondary;
+		border-radius: 0;
+	}
+	.play-against-computer {
+		opacity: .5;
 	}
 }
 
 .form-players {
 	margin-top: 3.5rem;
+	// display: none;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -82,7 +91,8 @@ button {
 	}
 }
 
-.start-game-buttons {
+.start-game-button {
+	// display: none;
 	display: flex;
 	justify-content: center;
 	margin-top: 1rem;
@@ -92,14 +102,29 @@ button {
 	}
 }
 
+.players-score {
+	display: none;
+	// display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	margin-top: 6rem;
+	font-size: 1.2rem;
+	color: $secondary-text-color;
+	.score {
+		font-size: 1.5rem;
+		color: $primary-text-color;
+	}
+}
+
 .gameboard-grid {
-	display: grid;
+	display: none;
+	// display: grid;
 	justify-content: center;
 	grid-template-columns: repeat(3, 1fr);
 	grid-gap: 5px;
 	max-width: 400px;
 	margin: 0 auto;
-	margin-top: 2rem;
+	margin-top: 4rem;
 	background-color: rgba(0, 0, 0, 0.212);
 	.gameboard-grid-item {
 		display: flex;
@@ -120,7 +145,8 @@ button {
 }
 
 .play-game-buttons {
-	display: flex;
+	display: none;
+	// display: flex;
 	flex-direction: column;
 	@media screen and (min-width: 580px) {
 		flex-direction: row;
@@ -136,7 +162,8 @@ button {
 }
 
 .winner-game {
-	display: flex;
+	display: none;
+	// display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;

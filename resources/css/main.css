@@ -55,7 +55,7 @@ body {
   background: #5cdb95; }
 
 .container {
-  max-width: 1192px;
+  max-width: 600px;
   padding: 0 30px;
   margin: 0 auto; }
 
@@ -71,7 +71,8 @@ header {
 button {
   border: none;
   border-radius: 50px;
-  background: #ff8181;
+  border: 1px solid #edf5e1;
+  background-color: #ff8800;
   color: white;
   cursor: pointer; }
 
@@ -84,7 +85,13 @@ button {
     padding: 10px 20px;
     width: 100px;
     display: flex;
-    justify-content: center; }
+    justify-content: center;
+    color: #ff8800;
+    background-color: white;
+    border: 1px solid #ff8800;
+    border-radius: 0; }
+  .play-against .play-against-computer {
+    opacity: .5; }
 
 .form-players {
   margin-top: 3.5rem;
@@ -109,22 +116,33 @@ button {
     .form-players .form-players-fieldset input:last-child {
       margin-bottom: 2rem; }
 
-.start-game-buttons {
+.start-game-button {
   display: flex;
   justify-content: center;
   margin-top: 1rem;
   margin-bottom: 3rem; }
-  .start-game-buttons button {
+  .start-game-button button {
     padding: 10px 20px; }
 
+.players-score {
+  display: none;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 6rem;
+  font-size: 1.2rem;
+  color: #05386b; }
+  .players-score .score {
+    font-size: 1.5rem;
+    color: #edf5e1; }
+
 .gameboard-grid {
-  display: grid;
+  display: none;
   justify-content: center;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 5px;
   max-width: 400px;
   margin: 0 auto;
-  margin-top: 2rem;
+  margin-top: 4rem;
   background-color: rgba(0, 0, 0, 0.212); }
   .gameboard-grid .gameboard-grid-item {
     display: flex;
@@ -140,7 +158,7 @@ button {
     vertical-align: top; }
 
 .play-game-buttons {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -154,7 +172,7 @@ button {
     width: 120px; }
 
 .winner-game {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;

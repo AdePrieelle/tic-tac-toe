@@ -24,16 +24,22 @@
       <form class="form-players" action="">
   
         <fieldset class="form-players-fieldset">
-          <label for="player1">Player 1</label>
+          <label for="player1">Player 1 ("X")</label>
           <input type="text" name="player1" id="player1">
-          <label for="player2">Player 2</label>
-          <input type="text" name="player2" id="player2">
+          <label class="label-player-2" for="player2">Player 2 ("O")</label>
+          <input class="input-player-2" type="text" name="player2" id="player2">
         </fieldset>
   
       </form>
   
-      <div class="start-game-buttons">
-        <button class="start-game">Start Game</button>
+      <div class="start-game-button">
+        <button class="start-game-play">Start Game</button>
+      </div>
+
+      <div class="players-score">
+        <div class="player-1-score">Player 1 ("X")</div>
+        <div class="score">0:0</div>
+        <div class="player-2-score">Player 2 ("O")</div>
       </div>
       
       <div class="gameboard-grid">

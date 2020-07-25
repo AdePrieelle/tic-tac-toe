@@ -1,5 +1,58 @@
 "use strict";
 
+const playAgainst = document.querySelector(".play-against");
+const playAgainstPlayer = document.querySelector(".play-against-player");
+const playAgainstComputer = document.querySelector(".play-against-computer");
+const formPlayers = document.querySelector(".form-players");
+const startGameButton = document.querySelector(".start-game-button");
+const labelPlayer2 = document.querySelector(".label-player-2");
+const inputPlayer2 = document.querySelector(".input-player-2");
+const startGamePlay = document.querySelector(".start-game-play");
+const gameboardGrid = document.querySelector(".gameboard-grid");
+const playGameButtons = document.querySelector(".play-game-buttons");
+const startGame = document.querySelector(".start-game");
+const playersScore = document.querySelector(".players-score");
+
+playAgainstPlayer.addEventListener("click", function() {
+  playAgainstPlayer.setAttribute("style", "opacity: 1;");
+  playAgainstComputer.setAttribute("style", "opacity: .5;");
+  formPlayers.setAttribute("style", "display: flex;");
+  labelPlayer2.setAttribute("style", "display: block");
+  inputPlayer2.setAttribute("style", "display: block");
+  startGameButton.setAttribute("style", "display: flex;");
+});
+
+playAgainstComputer.addEventListener("click", function() {
+  playAgainstPlayer.setAttribute("style", "opacity: .5;");
+  playAgainstComputer.setAttribute("style", "opacity: 1;");
+  formPlayers.setAttribute("style", "display: flex;");
+  startGameButton.setAttribute("style", "display: flex;");
+  labelPlayer2.setAttribute("style", "display: none");
+  inputPlayer2.setAttribute("style", "display: none");
+});
+
+startGamePlay.addEventListener("click", function() {
+  playAgainst.setAttribute("style", "display: none;");
+  formPlayers.setAttribute("style", "display: none;");
+  startGameButton.setAttribute("style", "display: none;");
+  gameboardGrid.setAttribute("style", "display: grid");
+  playGameButtons.setAttribute("style", "display: flex");
+  playersScore.setAttribute("style", "display: flex");
+});
+
+startGame.addEventListener("click", function() {
+  playAgainst.setAttribute("style", "display: flex;");
+  playAgainstPlayer.setAttribute("style", "opacity: 1;");
+  playAgainstComputer.setAttribute("style", "opacity: .5;");
+  labelPlayer2.setAttribute("style", "display: flex");
+  inputPlayer2.setAttribute("style", "display: flex");
+  formPlayers.setAttribute("style", "display: flex;");
+  startGameButton.setAttribute("style", "display: flex;");
+  gameboardGrid.setAttribute("style", "display: none");
+  playGameButtons.setAttribute("style", "display: none");
+  playersScore.setAttribute("style", "display: none");
+});
+
 
 
 /*
