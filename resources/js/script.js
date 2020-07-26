@@ -1,5 +1,8 @@
 "use strict";
 
+// Step 1
+
+// Selectors
 const playAgainst = document.querySelector(".play-against");
 const playAgainstPlayer = document.querySelector(".play-against-player");
 const playAgainstComputer = document.querySelector(".play-against-computer");
@@ -52,6 +55,100 @@ startGame.addEventListener("click", function() {
   playGameButtons.setAttribute("style", "display: none");
   playersScore.setAttribute("style", "display: none");
 });
+
+
+// Step 2
+
+const gameBoard = (() => {
+  let gameBoardArray = [
+    ["X", "", "O"], 
+    ["O", "O", ""], 
+    ["X", "X", "X"]
+  ];
+  
+  return {
+    gameBoardArray
+  };
+})();
+
+// Step 3
+
+const displayController = (() => {
+  const render = function(gameBoardArray) {
+    const item0 = document.querySelector(".gridboard-item-0-0");
+    const item1 = document.querySelector(".gridboard-item-0-1");
+    const item2 = document.querySelector(".gridboard-item-0-2");
+    const item3 = document.querySelector(".gridboard-item-1-0");
+    const item4 = document.querySelector(".gridboard-item-1-1");
+    const item5 = document.querySelector(".gridboard-item-1-2");
+    const item6 = document.querySelector(".gridboard-item-2-0");
+    const item7 = document.querySelector(".gridboard-item-2-1");
+    const item8 = document.querySelector(".gridboard-item-2-2");
+
+    item0.innerHTML = `${gameBoardArray[0][0]}`;
+    item1.innerHTML = `${gameBoardArray[0][1]}`;
+    item2.innerHTML = `${gameBoardArray[0][2]}`;
+    item3.innerHTML = `${gameBoardArray[1][0]}`;
+    item4.innerHTML = `${gameBoardArray[1][1]}`;
+    item5.innerHTML = `${gameBoardArray[1][2]}`;
+    item6.innerHTML = `${gameBoardArray[2][0]}`;
+    item7.innerHTML = `${gameBoardArray[2][1]}`;
+    item8.innerHTML = `${gameBoardArray[2][2]}`;
+  };
+
+  return {
+    render
+  };
+})();
+
+const player = (name) => {
+  return {
+    name
+  };
+};
+
+displayController.render(gameBoard.gameBoardArray);
+
+
+// Step 4
+
+
+
+/*
+4.  Build the functions that allow players to add marks to a specific spot on the board, 
+    and then tie it to the DOM, letting players click on the gameboard to place their marker. 
+    Don’t forget the logic that keeps players from playing in spots that are already taken! 
+
+    4.1 Think carefully about where each bit of logic should reside. 
+        Each little piece of functionality should be able to fit 
+        in the game, player or gameboard objects.. 
+        but take care to put them in “logical” places. 
+        Spending a little time brainstorming here can make your life much easier later!
+
+          - player
+              - isTurn = true;
+
+          - displayController
+              - let marker = "";
+              - if (innerHTML of document.queryselector(".class") is empty )
+                - Make a function addMark() that will change innerHTML based on 
+                  - if (playerX.isTurn) change to "X") {
+                    marker = "X"
+                    playerX.isTurn = false;
+                    playerO.isTurn = true;
+                  } else {
+                    marker = "O"
+                    playerX.isTurn = true;
+                    playerO.isTurn = false;
+                  }
+
+              - update the gameboard array with marker where is clicked
+                  - tile1.addeventlistener("click", add marker to gameBoard array location)
+                  - tile2.adaddeventlistener("click", add marker to gameBoard array location)
+                  - ....
+
+              - render the gameboard from the gameBoard array
+*/
 
 
 
