@@ -170,6 +170,8 @@ const displayController = (() => {
     item6.innerHTML = `${gameBoardArray[2][0]}`;
     item7.innerHTML = `${gameBoardArray[2][1]}`;
     item8.innerHTML = `${gameBoardArray[2][2]}`;
+    displayController.isTheWinner(gameBoard.gameBoardArray);
+    displayController.winnerMessage(gameBoard.gameBoardArray);
   };
 
   // Step 4
@@ -338,10 +340,123 @@ const displayController = (() => {
 
   };
 
+  const isTheWinner = function(gameBoardArray) {
+    if (gameBoardArray[0][0] == "X" && gameBoardArray[0][1] == "X" && gameBoardArray[0][2] == "X") {
+      player1.isWinner = true;
+      player2.isWinner = false;
+    } else if (gameBoardArray[1][0] == "X" && gameBoardArray[1][1] == "X" && gameBoardArray[1][2] == "X") {
+      player1.isWinner = true;
+      player2.isWinner = false;
+    } else if (gameBoardArray[2][0] == "X" && gameBoardArray[2][1] == "X" && gameBoardArray[2][2] == "X") {
+      player1.isWinner = true;
+      player2.isWinner = false;
+    } else if (gameBoardArray[0][0] == "X" && gameBoardArray[1][0] == "X" && gameBoardArray[2][0] == "X") {
+      player1.isWinner = true;
+      player2.isWinner = false;
+    } else if (gameBoardArray[0][1] == "X" && gameBoardArray[1][1] == "X" && gameBoardArray[2][1] == "X") {
+      player1.isWinner = true;
+      player2.isWinner = false;
+    } else if (gameBoardArray[0][2] == "X" && gameBoardArray[1][2] == "X" && gameBoardArray[2][2] == "X") {
+      player1.isWinner = true;
+      player2.isWinner = false;
+    } else if (gameBoardArray[0][0] == "X" && gameBoardArray[1][1] == "X" && gameBoardArray[2][2] == "X") {
+      player1.isWinner = true;
+      player2.isWinner = false;
+    } else if (gameBoardArray[2][0] == "X" && gameBoardArray[1][1] == "X" && gameBoardArray[0][2] == "X") {
+      player1.isWinner = true;
+      player2.isWinner = false;
+    } else if (gameBoardArray[0][0] == "O" && gameBoardArray[0][1] == "O" && gameBoardArray[0][2] == "O") {
+      player1.isWinner = false;
+      player2.isWinner = true;
+    } else if (gameBoardArray[1][0] == "O" && gameBoardArray[1][1] == "O" && gameBoardArray[1][2] == "O") {
+      player1.isWinner = false;
+      player2.isWinner = true;
+    } else if (gameBoardArray[2][0] == "O" && gameBoardArray[2][1] == "O" && gameBoardArray[2][2] == "O") {
+      player1.isWinner = false;
+      player2.isWinner = true;
+    } else if (gameBoardArray[0][0] == "O" && gameBoardArray[1][0] == "O" && gameBoardArray[2][0] == "O") {
+      player1.isWinner = false;
+      player2.isWinner = true;
+    } else if (gameBoardArray[0][1] == "O" && gameBoardArray[1][1] == "O" && gameBoardArray[2][1] == "O") {
+      player1.isWinner = false;
+      player2.isWinner = true;
+    } else if (gameBoardArray[0][2] == "O" && gameBoardArray[1][2] == "O" && gameBoardArray[2][2] == "O") {
+      player1.isWinner = false;
+      player2.isWinner = true;
+    } else if (gameBoardArray[0][0] == "O" && gameBoardArray[1][1] == "O" && gameBoardArray[2][2] == "O") {
+      player1.isWinner = false;
+      player2.isWinner = true;
+    } else if (gameBoardArray[2][0] == "O" && gameBoardArray[1][1] == "O" && gameBoardArray[0][2] == "O") {
+      player1.isWinner = false;
+      player2.isWinner = true;
+    } else if (gameBoardArray[0][0] !== "" && gameBoardArray[0][1] !== "" && gameBoardArray[0][2] !== "" 
+              && gameBoardArray[1][0] !== "" && gameBoardArray[1][0] !== "" && gameBoardArray[1][2] !== "" 
+              && gameBoardArray[2][0] !== "" && gameBoardArray[2][1] !== "" && gameBoardArray[2][2] !== "") {
+      player1.isWinner = false;
+      player2.isWinner = false;
+    }
+  };
+
+  const winnerMessage = function(gameBoardArray) {
+    if (player1.isWinner == false && player2.isWinner == false && gameBoardArray[0][0] !== "" && gameBoardArray[0][1] !== "" && gameBoardArray[0][2] !== "" 
+    && gameBoardArray[1][0] !== "" && gameBoardArray[1][0] !== "" && gameBoardArray[1][2] !== "" 
+    && gameBoardArray[2][0] !== "" && gameBoardArray[2][1] !== "" && gameBoardArray[2][2] !== "") {
+      document.querySelector(".winner-message").innerHTML = "It's a draw!";
+      player1.isWinner = false;
+      player2.isWinner = false;
+    } else if (player1.isWinner == true && player2.isWinner == false) {
+      player1.playerScore += 1;
+      document.querySelector(".score").innerHTML = `${player1.playerScore}:${player2.playerScore}`;
+      document.querySelector(".winner-message").innerHTML = "Player 1 won the game!";
+      player1.isWinner = false;
+      player2.isWinner = false;
+    } else if (player1.isWinner == false && player2.isWinner == true) {
+      player2.playerScore += 1;
+      document.querySelector(".score").innerHTML = `${player1.playerScore}:${player2.playerScore}`;
+      document.querySelector(".winner-message").innerHTML = "Player 2 won the game!";
+      player1.isWinner = false;
+      player2.isWinner = false;     
+    }
+  };
+
+  const resetScores = function() {
+    document.querySelector(".start-game-play").addEventListener("click", function() {
+      player1.playerScore = 0;
+      player2.playerScore = 0;
+      document.querySelector(".score").innerHTML = `${player1.playerScore}:${player2.playerScore}`
+    });
+    document.querySelector(".reset-game").addEventListener("click", function() {
+      player1.playerScore = 0;
+      player2.playerScore = 0;
+      document.querySelector(".score").innerHTML = `${player1.playerScore}:${player2.playerScore}`
+    });
+    document.querySelector(".reset-game-end").addEventListener("click", function() {
+      player1.playerScore = 0;
+      player2.playerScore = 0;
+      document.querySelector(".score").innerHTML = `${player1.playerScore}:${player2.playerScore}`
+    });
+    document.querySelector(".start-game").addEventListener("click", function() {
+      player1.playerScore = 0;
+      player2.playerScore = 0;
+      document.querySelector(".score").innerHTML = `${player1.playerScore}:${player2.playerScore}`
+    });
+    document.querySelector(".start-game-end").addEventListener("click", function() {
+      player1.playerScore = 0;
+      player2.playerScore = 0;
+      document.querySelector(".score").innerHTML = `${player1.playerScore}:${player2.playerScore}`
+    });
+  }
+
+
+
   return {
     render,
     decideFirstMove,
-    addMark
+    addMark,
+    // new
+    isTheWinner,
+    winnerMessage,
+    resetScores
   };
 })();
 
@@ -351,11 +466,15 @@ const player = (name, marker, isPlayerTurn, isPlayerFirstMove) => {
   let playerMarker = marker;
   let isTurn = isPlayerTurn;
   let isFirstMove = isPlayerFirstMove;
+  let isWinner = false;
+  let playerScore = 0;
   return {
     name,
     isTurn,
     isFirstMove,
-    playerMarker
+    playerMarker,
+    isWinner,
+    playerScore
   };
 };
 
@@ -365,16 +484,27 @@ const player2 = player("player2", "O", false, false);
 displayController.render(gameBoard.gameBoardArray);
 displayController.decideFirstMove();
 displayController.addMark();
+displayController.resetScores();
+
+// Step 5
+
 
 
 
 /*
-5.  Build the logic that checks for when the game is over! Should check for 3-in-a-row and a tie.
+6.  Clean up the interface to allow players to put in their names, 
+    include a button to start/restart the game and 
+    add a display element that congratulates the winning player!
 
-      - if (check gameBoard array for 3 in a row)
-        - player object
-            -isWinner = true;
-            update player.score
+      - add modal window for winner    
+
+      - add html form elements to store names
+      - save names in player object when pressing start
+      - if (playerX.isWinner == true) {
+        display name + is the winner;
+      }
+
+      - reset objects when pressing reset (maybe add to resetScore function)
 */
 
 

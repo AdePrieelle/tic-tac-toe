@@ -172,7 +172,7 @@ button {
     width: 120px; }
 
 .winner-game {
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
