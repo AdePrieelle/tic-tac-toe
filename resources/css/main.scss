@@ -170,7 +170,7 @@ button {
 	margin-top: 3rem;
 	.winner-message {
 		margin-bottom: 2rem;
-		color: $secondary-text-color;
+		color: white;
 		font-size: 3rem;
 		text-align: center;
 	}
@@ -188,6 +188,34 @@ button {
 			width: 120px;
 		}
 	}
+}
+
+// modal winner
+
+.bg-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+	overflow: scroll;
+	background: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+	position: relative;
+	padding: 20px 40px;
+	border-radius: 4px;
+	height: auto;
+	max-height: 80vh;
+	border-radius: 5px;
+	border: 10px solid rgba(255, 255, 255, 0.2);
+	background-color: rgba(0, 0, 0, 0.3);
+	overflow-y: auto;
 }
 
 

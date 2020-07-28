@@ -20,6 +20,7 @@ const resetGameEnd = document.querySelector(".reset-game-end");
 const resetGameRoundRedo = document.querySelector(".reset-game-round-redo");
 const resetGameRoundNext = document.querySelector(".reset-game-round-next");
 const playersScore = document.querySelector(".players-score");
+const bgModal = document.querySelector(".bg-modal");
 
 playAgainstPlayer.addEventListener("click", function() {
   playAgainstPlayer.setAttribute("style", "opacity: 1;");
@@ -92,6 +93,7 @@ startGameEnd.addEventListener("click", function() {
     ["", "", ""]
   ];
   displayController.render(gameBoard.gameBoardArray);
+  bgModal.setAttribute("style", "display: none;");
 });
 
 resetGameRoundRedo.addEventListener("click", function() {
@@ -110,6 +112,7 @@ resetGameRoundNext.addEventListener("click", function() {
     ["", "", ""]
   ];
   displayController.render(gameBoard.gameBoardArray);
+  bgModal.setAttribute("style", "display: none;");
 });
 
 resetGame.addEventListener("click", function() {
@@ -128,6 +131,7 @@ resetGameEnd.addEventListener("click", function() {
     ["", "", ""]
   ];
   displayController.render(gameBoard.gameBoardArray);
+  bgModal.setAttribute("style", "display: none;");
 });
 
 
@@ -402,18 +406,27 @@ const displayController = (() => {
     && gameBoardArray[1][0] !== "" && gameBoardArray[1][0] !== "" && gameBoardArray[1][2] !== "" 
     && gameBoardArray[2][0] !== "" && gameBoardArray[2][1] !== "" && gameBoardArray[2][2] !== "") {
       document.querySelector(".winner-message").innerHTML = "It's a draw!";
+
+      showWinnerScreen.showTheWinnerScreen();
+
       player1.isWinner = false;
       player2.isWinner = false;
     } else if (player1.isWinner == true && player2.isWinner == false) {
       player1.playerScore += 1;
       document.querySelector(".score").innerHTML = `${player1.playerScore}:${player2.playerScore}`;
       document.querySelector(".winner-message").innerHTML = "Player 1 won the game!";
+
+      showWinnerScreen.showTheWinnerScreen();
+
       player1.isWinner = false;
       player2.isWinner = false;
     } else if (player1.isWinner == false && player2.isWinner == true) {
       player2.playerScore += 1;
       document.querySelector(".score").innerHTML = `${player1.playerScore}:${player2.playerScore}`;
       document.querySelector(".winner-message").innerHTML = "Player 2 won the game!";
+
+      showWinnerScreen.showTheWinnerScreen();
+
       player1.isWinner = false;
       player2.isWinner = false;     
     }
@@ -446,6 +459,19 @@ const displayController = (() => {
       document.querySelector(".score").innerHTML = `${player1.playerScore}:${player2.playerScore}`
     });
   }
+
+  const showWinnerScreen = (function() {
+    const showTheWinnerScreen = function() {
+      document.querySelector(".bg-modal").setAttribute("style", "display: flex;");
+    }
+    const hideTheWinnerScreen = function() {
+      document.querySelector(".bg-modal").setAttribute("style", "display: none;");
+    }
+    return {
+      showTheWinnerScreen,
+      hideTheWinnerScreen
+    };
+  })();
 
 
 
