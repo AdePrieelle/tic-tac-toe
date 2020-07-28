@@ -8,6 +8,7 @@ const playAgainstPlayer = document.querySelector(".play-against-player");
 const playAgainstComputer = document.querySelector(".play-against-computer");
 const formPlayers = document.querySelector(".form-players");
 const startGameButton = document.querySelector(".start-game-button");
+const inputPlayer1 = document.querySelector(".input-player-1");
 const labelPlayer2 = document.querySelector(".label-player-2");
 const inputPlayer2 = document.querySelector(".input-player-2");
 const startGamePlay = document.querySelector(".start-game-play");
@@ -21,6 +22,8 @@ const resetGameRoundRedo = document.querySelector(".reset-game-round-redo");
 const resetGameRoundNext = document.querySelector(".reset-game-round-next");
 const playersScore = document.querySelector(".players-score");
 const bgModal = document.querySelector(".bg-modal");
+const player1Score = document.querySelector(".player-1-score");
+const player2Score = document.querySelector(".player-2-score");
 
 playAgainstPlayer.addEventListener("click", function() {
   playAgainstPlayer.setAttribute("style", "opacity: 1;");
@@ -53,6 +56,19 @@ startGamePlay.addEventListener("click", function() {
     ["", "", ""]
   ];
   displayController.render(gameBoard.gameBoardArray);
+  // Give default names to empty player inputs
+  if (inputPlayer1.value == "") {
+    player1.name = "Player 1";
+  } else {
+    player1.name = inputPlayer1.value;
+  }
+  if (inputPlayer2.value == "") {
+    player2.name = "Player 2";
+  } else {
+    player2.name = inputPlayer2.value;
+  }
+  player1Score.innerHTML = `${player1.name} ("X")`;
+  player2Score.innerHTML = `${player2.name} ("O")`;
 });
 
 startGame.addEventListener("click", function() {
@@ -73,6 +89,8 @@ startGame.addEventListener("click", function() {
     ["", "", ""]
   ];
   displayController.render(gameBoard.gameBoardArray);
+  player1.resetPlayers();
+  player2.resetPlayers();
 });
 
 startGameEnd.addEventListener("click", function() {
@@ -94,6 +112,8 @@ startGameEnd.addEventListener("click", function() {
   ];
   displayController.render(gameBoard.gameBoardArray);
   bgModal.setAttribute("style", "display: none;");
+  player1.resetPlayers();
+  player2.resetPlayers();
 });
 
 resetGameRoundRedo.addEventListener("click", function() {
@@ -406,27 +426,21 @@ const displayController = (() => {
     && gameBoardArray[1][0] !== "" && gameBoardArray[1][0] !== "" && gameBoardArray[1][2] !== "" 
     && gameBoardArray[2][0] !== "" && gameBoardArray[2][1] !== "" && gameBoardArray[2][2] !== "") {
       document.querySelector(".winner-message").innerHTML = "It's a draw!";
-
       showWinnerScreen.showTheWinnerScreen();
-
       player1.isWinner = false;
       player2.isWinner = false;
     } else if (player1.isWinner == true && player2.isWinner == false) {
       player1.playerScore += 1;
       document.querySelector(".score").innerHTML = `${player1.playerScore}:${player2.playerScore}`;
-      document.querySelector(".winner-message").innerHTML = "Player 1 won the game!";
-
+      document.querySelector(".winner-message").innerHTML = `${player1.name} won the game!`;
       showWinnerScreen.showTheWinnerScreen();
-
       player1.isWinner = false;
       player2.isWinner = false;
     } else if (player1.isWinner == false && player2.isWinner == true) {
       player2.playerScore += 1;
       document.querySelector(".score").innerHTML = `${player1.playerScore}:${player2.playerScore}`;
-      document.querySelector(".winner-message").innerHTML = "Player 2 won the game!";
-
+      document.querySelector(".winner-message").innerHTML = `${player2.name} won the game!`;
       showWinnerScreen.showTheWinnerScreen();
-
       player1.isWinner = false;
       player2.isWinner = false;     
     }
@@ -488,24 +502,43 @@ const displayController = (() => {
 
 
 // Step 4
+
 const player = (name, marker, isPlayerTurn, isPlayerFirstMove) => {
+  
   let playerMarker = marker;
   let isTurn = isPlayerTurn;
   let isFirstMove = isPlayerFirstMove;
   let isWinner = false;
   let playerScore = 0;
+
+  const resetPlayers = function() {
+    inputPlayer1.value = "";
+    inputPlayer2.value = "";
+    player1.playerMarker = "X";
+    player2.playerMarker = "O";
+    player1.isTurn = true;
+    player2.isTurn = false;
+    player1.isFirstMove = true;
+    player2.isFirstMove = false;
+    player1.isWinner = false;
+    player2.isWinner = false;
+    player1.playerScore = 0;
+    player2.playerScore = 0;
+  };
+
   return {
     name,
     isTurn,
     isFirstMove,
     playerMarker,
     isWinner,
-    playerScore
+    playerScore,
+    resetPlayers
   };
 };
 
-const player1 = player("player1", "X", true, true);
-const player2 = player("player2", "O", false, false);
+let player1 = player("Player 1", "X", true, true);
+let player2 = player("Player 2", "O", false, false);
 
 displayController.render(gameBoard.gameBoardArray);
 displayController.decideFirstMove();
