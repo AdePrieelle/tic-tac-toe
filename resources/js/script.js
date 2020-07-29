@@ -28,6 +28,12 @@ const player2Score = document.querySelector(".player-2-score");
 playAgainstPlayer.addEventListener("click", function() {
   playAgainstPlayer.setAttribute("style", "opacity: 1;");
   playAgainstComputer.setAttribute("style", "opacity: .5;");
+
+  if (!playAgainstPlayer.classList.contains("active-play-mode")) {
+    playAgainstPlayer.classList += " active-play-mode";
+  }
+  playAgainstComputer.classList.remove("active-play-mode");
+
   formPlayers.setAttribute("style", "display: flex;");
   labelPlayer2.setAttribute("style", "display: block");
   inputPlayer2.setAttribute("style", "display: block");
@@ -37,6 +43,12 @@ playAgainstPlayer.addEventListener("click", function() {
 playAgainstComputer.addEventListener("click", function() {
   playAgainstPlayer.setAttribute("style", "opacity: .5;");
   playAgainstComputer.setAttribute("style", "opacity: 1;");
+
+  if (!playAgainstComputer.classList.contains("active-play-mode")) {
+    playAgainstComputer.classList += " active-play-mode";
+  }
+  playAgainstPlayer.classList.remove("active-play-mode");
+
   formPlayers.setAttribute("style", "display: flex;");
   startGameButton.setAttribute("style", "display: flex;");
   labelPlayer2.setAttribute("style", "display: none");
@@ -51,9 +63,9 @@ startGamePlay.addEventListener("click", function() {
   playGameButtons.setAttribute("style", "display: flex");
   playersScore.setAttribute("style", "display: flex");
   gameBoard.gameBoardArray = [
-    ["", "", ""], 
-    ["", "", ""], 
-    ["", "", ""]
+    "", "", "", 
+    "", "", "", 
+    "", "", ""
   ];
   displayController.render(gameBoard.gameBoardArray);
   // Give default names to empty player inputs
@@ -63,12 +75,18 @@ startGamePlay.addEventListener("click", function() {
     player1.name = inputPlayer1.value;
   }
   if (inputPlayer2.value == "") {
-    player2.name = "Player 2";
+    // Give player 2 "Computer" as name if computer playmode is selected
+    if (playAgainstComputer.classList.contains("active-play-mode")) {
+      player2.name = "Computer";
+    } else {
+      player2.name = "Player 2";
+    }
   } else {
     player2.name = inputPlayer2.value;
   }
   player1Score.innerHTML = `${player1.name} ("X")`;
   player2Score.innerHTML = `${player2.name} ("O")`;
+  displayController.addMark();
 });
 
 startGame.addEventListener("click", function() {
@@ -84,13 +102,18 @@ startGame.addEventListener("click", function() {
   playersScore.setAttribute("style", "display: none");
   // reset gameBoard
   gameBoard.gameBoardArray = [
-    ["", "", ""], 
-    ["", "", ""], 
-    ["", "", ""]
+    "", "", "", 
+    "", "", "", 
+    "", "", ""
   ];
   displayController.render(gameBoard.gameBoardArray);
   player1.resetPlayers();
   player2.resetPlayers();
+  // Set Player mode to default and remove class active-play-mode from computer if needed
+  if (!playAgainstPlayer.classList.contains("active-play-mode")) {
+    playAgainstPlayer.classList += " active-play-mode";
+  }
+  playAgainstComputer.classList.remove("active-play-mode");
 });
 
 startGameEnd.addEventListener("click", function() {
@@ -105,51 +128,41 @@ startGameEnd.addEventListener("click", function() {
   playGameButtons.setAttribute("style", "display: none");
   playersScore.setAttribute("style", "display: none");
   // reset gameBoard
-  gameBoard.gameBoardArray = [
-    ["", "", ""], 
-    ["", "", ""], 
-    ["", "", ""]
-  ];
+  gameBoard.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
   displayController.render(gameBoard.gameBoardArray);
   bgModal.setAttribute("style", "display: none;");
   player1.resetPlayers();
   player2.resetPlayers();
+  if (!playAgainstPlayer.classList.contains("active-play-mode")) {
+    playAgainstPlayer.classList += " active-play-mode";
+  }
+  playAgainstComputer.classList.remove("active-play-mode");
 });
 
 resetGameRoundRedo.addEventListener("click", function() {
-  gameBoard.gameBoardArray = [
-    ["", "", ""], 
-    ["", "", ""], 
-    ["", "", ""]
-  ];
+  gameBoard.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
   displayController.render(gameBoard.gameBoardArray);
 });
 
 resetGameRoundNext.addEventListener("click", function() {
-  gameBoard.gameBoardArray = [
-    ["", "", ""], 
-    ["", "", ""], 
-    ["", "", ""]
-  ];
+  gameBoard.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
   displayController.render(gameBoard.gameBoardArray);
   bgModal.setAttribute("style", "display: none;");
+  // Start with a computermove if its the computers turn
+  // if (playAgainstComputer.classList.contains("active-play-mode")) {
+  //   if (player2.isFirstMove == true) {
+  //     displayController.addMark().randomComputerMove();
+  //   }
+  // }
 });
 
 resetGame.addEventListener("click", function() {
-  gameBoard.gameBoardArray = [
-    ["", "", ""], 
-    ["", "", ""], 
-    ["", "", ""]
-  ];
+  gameBoard.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
   displayController.render(gameBoard.gameBoardArray);
 });
 
 resetGameEnd.addEventListener("click", function() {
-  gameBoard.gameBoardArray = [
-    ["", "", ""], 
-    ["", "", ""], 
-    ["", "", ""]
-  ];
+  gameBoard.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
   displayController.render(gameBoard.gameBoardArray);
   bgModal.setAttribute("style", "display: none;");
 });
@@ -158,11 +171,7 @@ resetGameEnd.addEventListener("click", function() {
 // Step 2
 
 const gameBoard = (() => {
-  let gameBoardArray = [
-    ["", "", ""], 
-    ["", "", ""], 
-    ["", "", ""]
-  ];
+  let gameBoardArray = ["", "", "", "", "", "", "", "", ""];
   
   return {
     gameBoardArray
@@ -185,15 +194,15 @@ const displayController = (() => {
   
   const render = function(gameBoardArray) {
 
-    item0.innerHTML = `${gameBoardArray[0][0]}`;
-    item1.innerHTML = `${gameBoardArray[0][1]}`;
-    item2.innerHTML = `${gameBoardArray[0][2]}`;
-    item3.innerHTML = `${gameBoardArray[1][0]}`;
-    item4.innerHTML = `${gameBoardArray[1][1]}`;
-    item5.innerHTML = `${gameBoardArray[1][2]}`;
-    item6.innerHTML = `${gameBoardArray[2][0]}`;
-    item7.innerHTML = `${gameBoardArray[2][1]}`;
-    item8.innerHTML = `${gameBoardArray[2][2]}`;
+    item0.innerHTML = `${gameBoardArray[0]}`;
+    item1.innerHTML = `${gameBoardArray[1]}`;
+    item2.innerHTML = `${gameBoardArray[2]}`;
+    item3.innerHTML = `${gameBoardArray[3]}`;
+    item4.innerHTML = `${gameBoardArray[4]}`;
+    item5.innerHTML = `${gameBoardArray[5]}`;
+    item6.innerHTML = `${gameBoardArray[6]}`;
+    item7.innerHTML = `${gameBoardArray[7]}`;
+    item8.innerHTML = `${gameBoardArray[8]}`;
     displayController.isTheWinner(gameBoard.gameBoardArray);
     displayController.winnerMessage(gameBoard.gameBoardArray);
   };
@@ -214,95 +223,179 @@ const displayController = (() => {
       }
     }
 
+    
+
+    /*
+    7.1 Start by just getting the computer to make a random legal move.
+
+    check if player or computer is pressed at new game. check with active-play-mode class
+    if player is pressed execute normally like below
+    else if marker == "O" && isComputer {
+      let randomnumber = (0-8);
+      gameBoard.gameBoardArray[randomnumber] random that are empty that gameBoard.gameBoardArray[?][?] = marker;
+    }
+    */
+
+    // const randomComputerMove = function() {
+
+    //   // check if gameBoard.Array is full or if there is a winner
+    //   for(let i=0; i < gameBoard.gameBoardArray.length; i++){
+    //     if(gameBoard.gameBoardArray[i] !== "" || player1.isWinner == true || player2.isWinner == true) {
+    //       console.log("hi");
+    //     }
+    //   }
+
+    //   changeMarker();
+    //   console.log("hibbb");
+    //   let randomArrayIndex = Math.floor(Math.random() * gameBoard.gameBoardArray.length);
+    //   while (gameBoard.gameBoardArray[randomArrayIndex] !== "") {
+    //     randomArrayIndex = Math.floor(Math.random() * gameBoard.gameBoardArray.length);                      
+    //   }
+    //   gameBoard.gameBoardArray[randomArrayIndex] = marker;
+    //   displayController.render(gameBoard.gameBoardArray);
+    // }
+
+    
+
     item0.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[0][0] === "") {
+      if (gameBoard.gameBoardArray[0] === "") {
         changeMarker();
-        gameBoard.gameBoardArray[0][0] = marker;
+        gameBoard.gameBoardArray[0] = marker;
         displayController.render(gameBoard.gameBoardArray);
+        // execute randomComputerMove is the Computer play option is selected at start game
+        // if (playAgainstComputer.classList.contains("active-play-mode")) {
+        //   randomComputerMove();
+        // }
       } else {
         return;
       }
     });
 
     item1.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[0][1] === "") {
+      if (gameBoard.gameBoardArray[1] === "") {
         changeMarker();
-        gameBoard.gameBoardArray[0][1] = marker;
+        gameBoard.gameBoardArray[1] = marker;
         displayController.render(gameBoard.gameBoardArray);
+        // execute randomComputerMove is the Computer play option is selected at start game
+        // if (playAgainstComputer.classList.contains("active-play-mode")) {
+        //   randomComputerMove();
+        // }
       } else {
         return;
       }
     });
 
     item2.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[0][2] === "") {
+      if (gameBoard.gameBoardArray[2] === "") {
         changeMarker();
-        gameBoard.gameBoardArray[0][2] = marker;
+        gameBoard.gameBoardArray[2] = marker;
         displayController.render(gameBoard.gameBoardArray);
+        // execute randomComputerMove is the Computer play option is selected at start game
+        // if (playAgainstComputer.classList.contains("active-play-mode")) {
+        //   randomComputerMove();
+        // }
       } else {
         return;
       }
     });
   
     item3.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[1][0] === "") {
+      if (gameBoard.gameBoardArray[3] === "") {
         changeMarker();
-        gameBoard.gameBoardArray[1][0] = marker;
+        gameBoard.gameBoardArray[3] = marker;
         displayController.render(gameBoard.gameBoardArray);
+        // execute randomComputerMove is the Computer play option is selected at start game
+        // if (playAgainstComputer.classList.contains("active-play-mode")) {
+        //   randomComputerMove();
+        // }
       } else {
         return;
       }
     });
 
     item4.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[1][1] === "") {
+      if (gameBoard.gameBoardArray[4] === "") {
         changeMarker();
-        gameBoard.gameBoardArray[1][1] = marker;
+        gameBoard.gameBoardArray[4] = marker;
         displayController.render(gameBoard.gameBoardArray);
+        // execute randomComputerMove is the Computer play option is selected at start game
+        // if (playAgainstComputer.classList.contains("active-play-mode")) {
+        //   randomComputerMove();
+        // }
       } else {
         return;
       }
     });
 
     item5.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[1][2] === "") {
+      if (gameBoard.gameBoardArray[5] === "") {
         changeMarker();
-        gameBoard.gameBoardArray[1][2] = marker;
+        gameBoard.gameBoardArray[5] = marker;
         displayController.render(gameBoard.gameBoardArray);
+        // execute randomComputerMove is the Computer play option is selected at start game
+        // if (playAgainstComputer.classList.contains("active-play-mode")) {
+        //   randomComputerMove();
+        // }
       } else {
         return;
       }
     });
 
     item6.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[2][0] === "") {
+      if (gameBoard.gameBoardArray[6] === "") {
         changeMarker();
-        gameBoard.gameBoardArray[2][0] = marker;
+        gameBoard.gameBoardArray[6] = marker;
         displayController.render(gameBoard.gameBoardArray);
+        // execute randomComputerMove is the Computer play option is selected at start game
+        // if (playAgainstComputer.classList.contains("active-play-mode")) {
+        //   randomComputerMove();
+        // }
       } else {
         return;
       }
     });
 
     item7.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[2][1] === "") {
+      if (gameBoard.gameBoardArray[7] === "") {
         changeMarker();
-        gameBoard.gameBoardArray[2][1] = marker;
+        gameBoard.gameBoardArray[7] = marker;
         displayController.render(gameBoard.gameBoardArray);
+        // execute randomComputerMove is the Computer play option is selected at start game
+        // if (playAgainstComputer.classList.contains("active-play-mode")) {
+        //   randomComputerMove();
+        // }
       } else {
         return;
       }
     });
 
     item8.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[2][2] === "") {
+      if (gameBoard.gameBoardArray[8] === "") {
         changeMarker();
-        gameBoard.gameBoardArray[2][2] = marker;
+        gameBoard.gameBoardArray[8] = marker;
         displayController.render(gameBoard.gameBoardArray);
+        // execute randomComputerMove is the Computer play option is selected at start game
+        // if (playAgainstComputer.classList.contains("active-play-mode")) {
+        //   randomComputerMove();
+        // }
       } else {
         return;
       }
     });
+
+    
+
+    /*
+    7.1 Start by just getting the computer to make a random legal move.
+
+    check if player or computer is pressed at new game. check with active-play-mode class
+    if player is pressed execute normally like below
+    else if marker == "O" && isComputer {
+      let randomnumber = (0-8);
+      gameBoard.gameBoardArray[randomnumber] random that are empty that gameBoard.gameBoardArray[?][?] = marker;
+    }
+    */
+
 
   };
 
@@ -365,66 +458,66 @@ const displayController = (() => {
   };
 
   const isTheWinner = function(gameBoardArray) {
-    if (gameBoardArray[0][0] == "X" && gameBoardArray[0][1] == "X" && gameBoardArray[0][2] == "X") {
+    if (gameBoardArray[0] == "X" && gameBoardArray[1] == "X" && gameBoardArray[2] == "X") {
       player1.isWinner = true;
       player2.isWinner = false;
-    } else if (gameBoardArray[1][0] == "X" && gameBoardArray[1][1] == "X" && gameBoardArray[1][2] == "X") {
+    } else if (gameBoardArray[3] == "X" && gameBoardArray[4] == "X" && gameBoardArray[5] == "X") {
       player1.isWinner = true;
       player2.isWinner = false;
-    } else if (gameBoardArray[2][0] == "X" && gameBoardArray[2][1] == "X" && gameBoardArray[2][2] == "X") {
+    } else if (gameBoardArray[6] == "X" && gameBoardArray[7] == "X" && gameBoardArray[8] == "X") {
       player1.isWinner = true;
       player2.isWinner = false;
-    } else if (gameBoardArray[0][0] == "X" && gameBoardArray[1][0] == "X" && gameBoardArray[2][0] == "X") {
+    } else if (gameBoardArray[0] == "X" && gameBoardArray[3] == "X" && gameBoardArray[6] == "X") {
       player1.isWinner = true;
       player2.isWinner = false;
-    } else if (gameBoardArray[0][1] == "X" && gameBoardArray[1][1] == "X" && gameBoardArray[2][1] == "X") {
+    } else if (gameBoardArray[1] == "X" && gameBoardArray[4] == "X" && gameBoardArray[7] == "X") {
       player1.isWinner = true;
       player2.isWinner = false;
-    } else if (gameBoardArray[0][2] == "X" && gameBoardArray[1][2] == "X" && gameBoardArray[2][2] == "X") {
+    } else if (gameBoardArray[2] == "X" && gameBoardArray[5] == "X" && gameBoardArray[8] == "X") {
       player1.isWinner = true;
       player2.isWinner = false;
-    } else if (gameBoardArray[0][0] == "X" && gameBoardArray[1][1] == "X" && gameBoardArray[2][2] == "X") {
+    } else if (gameBoardArray[0] == "X" && gameBoardArray[4] == "X" && gameBoardArray[8] == "X") {
       player1.isWinner = true;
       player2.isWinner = false;
-    } else if (gameBoardArray[2][0] == "X" && gameBoardArray[1][1] == "X" && gameBoardArray[0][2] == "X") {
+    } else if (gameBoardArray[6] == "X" && gameBoardArray[4] == "X" && gameBoardArray[2] == "X") {
       player1.isWinner = true;
       player2.isWinner = false;
-    } else if (gameBoardArray[0][0] == "O" && gameBoardArray[0][1] == "O" && gameBoardArray[0][2] == "O") {
+    } else if (gameBoardArray[0] == "O" && gameBoardArray[1] == "O" && gameBoardArray[2] == "O") {
       player1.isWinner = false;
       player2.isWinner = true;
-    } else if (gameBoardArray[1][0] == "O" && gameBoardArray[1][1] == "O" && gameBoardArray[1][2] == "O") {
+    } else if (gameBoardArray[3] == "O" && gameBoardArray[4] == "O" && gameBoardArray[5] == "O") {
       player1.isWinner = false;
       player2.isWinner = true;
-    } else if (gameBoardArray[2][0] == "O" && gameBoardArray[2][1] == "O" && gameBoardArray[2][2] == "O") {
+    } else if (gameBoardArray[6] == "O" && gameBoardArray[7] == "O" && gameBoardArray[8] == "O") {
       player1.isWinner = false;
       player2.isWinner = true;
-    } else if (gameBoardArray[0][0] == "O" && gameBoardArray[1][0] == "O" && gameBoardArray[2][0] == "O") {
+    } else if (gameBoardArray[0] == "O" && gameBoardArray[3] == "O" && gameBoardArray[6] == "O") {
       player1.isWinner = false;
       player2.isWinner = true;
-    } else if (gameBoardArray[0][1] == "O" && gameBoardArray[1][1] == "O" && gameBoardArray[2][1] == "O") {
+    } else if (gameBoardArray[1] == "O" && gameBoardArray[4] == "O" && gameBoardArray[7] == "O") {
       player1.isWinner = false;
       player2.isWinner = true;
-    } else if (gameBoardArray[0][2] == "O" && gameBoardArray[1][2] == "O" && gameBoardArray[2][2] == "O") {
+    } else if (gameBoardArray[2] == "O" && gameBoardArray[5] == "O" && gameBoardArray[8] == "O") {
       player1.isWinner = false;
       player2.isWinner = true;
-    } else if (gameBoardArray[0][0] == "O" && gameBoardArray[1][1] == "O" && gameBoardArray[2][2] == "O") {
+    } else if (gameBoardArray[0] == "O" && gameBoardArray[4] == "O" && gameBoardArray[8] == "O") {
       player1.isWinner = false;
       player2.isWinner = true;
-    } else if (gameBoardArray[2][0] == "O" && gameBoardArray[1][1] == "O" && gameBoardArray[0][2] == "O") {
+    } else if (gameBoardArray[6] == "O" && gameBoardArray[4] == "O" && gameBoardArray[2] == "O") {
       player1.isWinner = false;
       player2.isWinner = true;
-    } else if (gameBoardArray[0][0] !== "" && gameBoardArray[0][1] !== "" && gameBoardArray[0][2] !== "" 
-              && gameBoardArray[1][0] !== "" && gameBoardArray[1][0] !== "" && gameBoardArray[1][2] !== "" 
-              && gameBoardArray[2][0] !== "" && gameBoardArray[2][1] !== "" && gameBoardArray[2][2] !== "") {
+    } else if (gameBoardArray[0] !== "" && gameBoardArray[1] !== "" && gameBoardArray[2] !== "" 
+              && gameBoardArray[3] !== "" && gameBoardArray[3] !== "" && gameBoardArray[5] !== "" 
+              && gameBoardArray[6] !== "" && gameBoardArray[7] !== "" && gameBoardArray[8] !== "") {
       player1.isWinner = false;
       player2.isWinner = false;
     }
   };
 
   const winnerMessage = function(gameBoardArray) {
-    if (player1.isWinner == false && player2.isWinner == false && gameBoardArray[0][0] !== "" && gameBoardArray[0][1] !== "" && gameBoardArray[0][2] !== "" 
-    && gameBoardArray[1][0] !== "" && gameBoardArray[1][0] !== "" && gameBoardArray[1][2] !== "" 
-    && gameBoardArray[2][0] !== "" && gameBoardArray[2][1] !== "" && gameBoardArray[2][2] !== "") {
+    if (player1.isWinner == false && player2.isWinner == false && gameBoardArray[0] !== "" && gameBoardArray[1] !== "" && gameBoardArray[2] !== "" 
+    && gameBoardArray[3] !== "" && gameBoardArray[3] !== "" && gameBoardArray[5] !== "" 
+    && gameBoardArray[6] !== "" && gameBoardArray[7] !== "" && gameBoardArray[8] !== "") {
       document.querySelector(".winner-message").innerHTML = "It's a draw!";
       showWinnerScreen.showTheWinnerScreen();
       player1.isWinner = false;
@@ -432,14 +525,14 @@ const displayController = (() => {
     } else if (player1.isWinner == true && player2.isWinner == false) {
       player1.playerScore += 1;
       document.querySelector(".score").innerHTML = `${player1.playerScore}:${player2.playerScore}`;
-      document.querySelector(".winner-message").innerHTML = `${player1.name} won the game!`;
+      document.querySelector(".winner-message").innerHTML = `${player1.name} is the winner!`;
       showWinnerScreen.showTheWinnerScreen();
       player1.isWinner = false;
       player2.isWinner = false;
     } else if (player1.isWinner == false && player2.isWinner == true) {
       player2.playerScore += 1;
       document.querySelector(".score").innerHTML = `${player1.playerScore}:${player2.playerScore}`;
-      document.querySelector(".winner-message").innerHTML = `${player2.name} won the game!`;
+      document.querySelector(".winner-message").innerHTML = `${player2.name} is the winner!`;
       showWinnerScreen.showTheWinnerScreen();
       player1.isWinner = false;
       player2.isWinner = false;     
@@ -542,7 +635,7 @@ let player2 = player("Player 2", "O", false, false);
 
 displayController.render(gameBoard.gameBoardArray);
 displayController.decideFirstMove();
-displayController.addMark();
+// displayController.addMark();
 displayController.resetScores();
 
 // Step 5
@@ -551,19 +644,15 @@ displayController.resetScores();
 
 
 /*
-6.  Clean up the interface to allow players to put in their names, 
-    include a button to start/restart the game and 
-    add a display element that congratulates the winning player!
+7.  Optional - If you’re feeling ambitious create an AI 
+    so that a player can play against the computer! 
 
-      - add modal window for winner    
-
-      - add html form elements to store names
-      - save names in player object when pressing start
-      - if (playerX.isWinner == true) {
-        display name + is the winner;
-      }
-
-      - reset objects when pressing reset (maybe add to resetScore function)
+    7.1 Start by just getting the computer to make a random legal move.
+    7.2 Once you’ve gotten that, work on making the computer smart. 
+        It is possible to create an unbeatable AI using the minimax algorithm 
+        (read about it here, some googling will help you out with this one)
+    7.3 If you get this running definitely come show it off in the chatroom. 
+        It’s quite an accomplishment!
 */
 
 
@@ -601,8 +690,8 @@ Steps
       - displayController
           - Make a function render() that will render the gameboard array to the webpage
               - const tile1 = document.querySelector(".tile1");
-              - tile1.innerHTML = `${gameBoardArray[0][1]}`;
-              - tile2.innerHTML = `${gameBoardArray[0][2]}`;
+              - tile1.innerHTML = `${gameBoardArray[1]}`;
+              - tile2.innerHTML = `${gameBoardArray[2]}`;
 
 4.  Build the functions that allow players to add marks to a specific spot on the board, 
     and then tie it to the DOM, letting players click on the gameboard to place their marker. 
