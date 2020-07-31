@@ -28,12 +28,10 @@ const player2Score = document.querySelector(".player-2-score");
 playAgainstPlayer.addEventListener("click", function() {
   playAgainstPlayer.setAttribute("style", "opacity: 1;");
   playAgainstComputer.setAttribute("style", "opacity: .5;");
-
   if (!playAgainstPlayer.classList.contains("active-play-mode")) {
     playAgainstPlayer.classList += " active-play-mode";
   }
   playAgainstComputer.classList.remove("active-play-mode");
-
   formPlayers.setAttribute("style", "display: flex;");
   labelPlayer2.setAttribute("style", "display: block");
   inputPlayer2.setAttribute("style", "display: block");
@@ -43,12 +41,10 @@ playAgainstPlayer.addEventListener("click", function() {
 playAgainstComputer.addEventListener("click", function() {
   playAgainstPlayer.setAttribute("style", "opacity: .5;");
   playAgainstComputer.setAttribute("style", "opacity: 1;");
-
   if (!playAgainstComputer.classList.contains("active-play-mode")) {
     playAgainstComputer.classList += " active-play-mode";
   }
   playAgainstPlayer.classList.remove("active-play-mode");
-
   formPlayers.setAttribute("style", "display: flex;");
   startGameButton.setAttribute("style", "display: flex;");
   labelPlayer2.setAttribute("style", "display: none");
@@ -62,11 +58,7 @@ startGamePlay.addEventListener("click", function() {
   gameboardGrid.setAttribute("style", "display: grid");
   playGameButtons.setAttribute("style", "display: flex");
   playersScore.setAttribute("style", "display: flex");
-  gameBoard.gameBoardArray = [
-    "", "", "", 
-    "", "", "", 
-    "", "", ""
-  ];
+  gameBoard.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
   displayController.render(gameBoard.gameBoardArray);
   // Give default names to empty player inputs
   if (inputPlayer1.value == "") {
@@ -101,11 +93,7 @@ startGame.addEventListener("click", function() {
   playGameButtons.setAttribute("style", "display: none");
   playersScore.setAttribute("style", "display: none");
   // reset gameBoard
-  gameBoard.gameBoardArray = [
-    "", "", "", 
-    "", "", "", 
-    "", "", ""
-  ];
+  gameBoard.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
   displayController.render(gameBoard.gameBoardArray);
   player1.resetPlayers();
   player2.resetPlayers();
@@ -148,12 +136,6 @@ resetGameRoundNext.addEventListener("click", function() {
   gameBoard.gameBoardArray = ["", "", "", "", "", "", "", "", ""];
   displayController.render(gameBoard.gameBoardArray);
   bgModal.setAttribute("style", "display: none;");
-  // Start with a computermove if its the computers turn
-  // if (playAgainstComputer.classList.contains("active-play-mode")) {
-  //   if (player2.isFirstMove == true) {
-  //     displayController.addMark().randomComputerMove();
-  //   }
-  // }
 });
 
 resetGame.addEventListener("click", function() {
@@ -193,7 +175,6 @@ const displayController = (() => {
   const item8 = document.querySelector(".gridboard-item-2-2");
   
   const render = function(gameBoardArray) {
-
     item0.innerHTML = `${gameBoardArray[0]}`;
     item1.innerHTML = `${gameBoardArray[1]}`;
     item2.innerHTML = `${gameBoardArray[2]}`;
@@ -203,8 +184,6 @@ const displayController = (() => {
     item6.innerHTML = `${gameBoardArray[6]}`;
     item7.innerHTML = `${gameBoardArray[7]}`;
     item8.innerHTML = `${gameBoardArray[8]}`;
-    displayController.isTheWinner(gameBoard.gameBoardArray);
-    displayController.winnerMessage(gameBoard.gameBoardArray);
   };
 
   // Step 4
@@ -214,189 +193,244 @@ const displayController = (() => {
     const changeMarker = function() {
       if (player1.isTurn == true) {
         marker = player1.playerMarker;
+        switchTurns();
+      } else {
+        marker = player2.playerMarker;
+        switchTurns();
+      }
+    }
+
+    const switchTurns = function() {
+      if (player1.isTurn == true) {
         player1.isTurn = false;
         player2.isTurn = true;
       } else {
-        marker = player2.playerMarker;
         player2.isTurn = false;
         player1.isTurn = true;
       }
+    };
+
+    // Step 7
+
+    function emptyArraySpots() {
+      for (let i=0; i < gameBoard.gameBoardArray.length; i++){
+        if (gameBoard.gameBoardArray[i] === "")   
+           return true;
+      }
+      return false;
     }
 
-    
+    function decidePlayerOrRandomMove() {
+      if (playAgainstPlayer.classList.contains("active-play-mode")) {
+        playerAddMark();
+      } else if (playAgainstComputer.classList.contains("active-play-mode") && player1.isTurn == true && emptyArraySpots() == true) {
+        playerAddMark();
+      } else if (playAgainstComputer.classList.contains("active-play-mode") && player2.isTurn == true && emptyArraySpots() == true) {
+        changeMarker();
+        let randomArrayIndex = Math.floor(Math.random() * gameBoard.gameBoardArray.length);
+        while (gameBoard.gameBoardArray[randomArrayIndex] !== "") {
+          randomArrayIndex = Math.floor(Math.random() * gameBoard.gameBoardArray.length);                      
+        }
+        gameBoard.gameBoardArray[randomArrayIndex] = marker;
 
-    /*
-    7.1 Start by just getting the computer to make a random legal move.
+        displayController.render(gameBoard.gameBoardArray);
+        // new
+        // setTimeout(displayController.render, 500, gameBoard.gameBoardArray);
+        // try out setTimeout but can still click before its your turn because setTimeout is asynchronous
 
-    check if player or computer is pressed at new game. check with active-play-mode class
-    if player is pressed execute normally like below
-    else if marker == "O" && isComputer {
-      let randomnumber = (0-8);
-      gameBoard.gameBoardArray[randomnumber] random that are empty that gameBoard.gameBoardArray[?][?] = marker;
+        displayController.isTheWinner(gameBoard.gameBoardArray);
+        if (player1.isWinner == true || player2.isWinner == true || emptyArraySpots() == false) {
+          displayController.winnerMessage(gameBoard.gameBoardArray);
+          resetGameRoundNext.addEventListener("click", function() {
+            decidePlayerOrRandomMove();
+          });
+        } else {
+          decidePlayerOrRandomMove();
+        }
+      }
     }
-    */
-
-    // const randomComputerMove = function() {
-
-    //   // check if gameBoard.Array is full or if there is a winner
-    //   for(let i=0; i < gameBoard.gameBoardArray.length; i++){
-    //     if(gameBoard.gameBoardArray[i] !== "" || player1.isWinner == true || player2.isWinner == true) {
-    //       console.log("hi");
-    //     }
-    //   }
-
-    //   changeMarker();
-    //   console.log("hibbb");
-    //   let randomArrayIndex = Math.floor(Math.random() * gameBoard.gameBoardArray.length);
-    //   while (gameBoard.gameBoardArray[randomArrayIndex] !== "") {
-    //     randomArrayIndex = Math.floor(Math.random() * gameBoard.gameBoardArray.length);                      
-    //   }
-    //   gameBoard.gameBoardArray[randomArrayIndex] = marker;
-    //   displayController.render(gameBoard.gameBoardArray);
-    // }
-
+    
+    resetGameRoundRedo.addEventListener("click", function() {
+      decidePlayerOrRandomMove();
+    });
+    
+    decidePlayerOrRandomMove();
     
 
-    item0.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[0] === "") {
-        changeMarker();
-        gameBoard.gameBoardArray[0] = marker;
-        displayController.render(gameBoard.gameBoardArray);
-        // execute randomComputerMove is the Computer play option is selected at start game
-        // if (playAgainstComputer.classList.contains("active-play-mode")) {
-        //   randomComputerMove();
-        // }
-      } else {
-        return;
-      }
-    });
+    function playerAddMark() {
 
-    item1.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[1] === "") {
-        changeMarker();
-        gameBoard.gameBoardArray[1] = marker;
-        displayController.render(gameBoard.gameBoardArray);
-        // execute randomComputerMove is the Computer play option is selected at start game
-        // if (playAgainstComputer.classList.contains("active-play-mode")) {
-        //   randomComputerMove();
-        // }
-      } else {
-        return;
-      }
-    });
-
-    item2.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[2] === "") {
-        changeMarker();
-        gameBoard.gameBoardArray[2] = marker;
-        displayController.render(gameBoard.gameBoardArray);
-        // execute randomComputerMove is the Computer play option is selected at start game
-        // if (playAgainstComputer.classList.contains("active-play-mode")) {
-        //   randomComputerMove();
-        // }
-      } else {
-        return;
-      }
-    });
+      item0.addEventListener("click", function() {
+        if (gameBoard.gameBoardArray[0] === "") {
+          changeMarker();
+          gameBoard.gameBoardArray[0] = marker;
+          displayController.render(gameBoard.gameBoardArray);
+          displayController.isTheWinner(gameBoard.gameBoardArray);
+          if (player1.isWinner == true || player2.isWinner == true || emptyArraySpots() == false) {
+            displayController.winnerMessage(gameBoard.gameBoardArray);
+            resetGameRoundNext.addEventListener("click", function() {
+              decidePlayerOrRandomMove();
+            });
+          } else {
+            decidePlayerOrRandomMove();
+          }
+        } else {
+          return;
+        }
+      });
   
-    item3.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[3] === "") {
-        changeMarker();
-        gameBoard.gameBoardArray[3] = marker;
-        displayController.render(gameBoard.gameBoardArray);
-        // execute randomComputerMove is the Computer play option is selected at start game
-        // if (playAgainstComputer.classList.contains("active-play-mode")) {
-        //   randomComputerMove();
-        // }
-      } else {
-        return;
-      }
-    });
-
-    item4.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[4] === "") {
-        changeMarker();
-        gameBoard.gameBoardArray[4] = marker;
-        displayController.render(gameBoard.gameBoardArray);
-        // execute randomComputerMove is the Computer play option is selected at start game
-        // if (playAgainstComputer.classList.contains("active-play-mode")) {
-        //   randomComputerMove();
-        // }
-      } else {
-        return;
-      }
-    });
-
-    item5.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[5] === "") {
-        changeMarker();
-        gameBoard.gameBoardArray[5] = marker;
-        displayController.render(gameBoard.gameBoardArray);
-        // execute randomComputerMove is the Computer play option is selected at start game
-        // if (playAgainstComputer.classList.contains("active-play-mode")) {
-        //   randomComputerMove();
-        // }
-      } else {
-        return;
-      }
-    });
-
-    item6.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[6] === "") {
-        changeMarker();
-        gameBoard.gameBoardArray[6] = marker;
-        displayController.render(gameBoard.gameBoardArray);
-        // execute randomComputerMove is the Computer play option is selected at start game
-        // if (playAgainstComputer.classList.contains("active-play-mode")) {
-        //   randomComputerMove();
-        // }
-      } else {
-        return;
-      }
-    });
-
-    item7.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[7] === "") {
-        changeMarker();
-        gameBoard.gameBoardArray[7] = marker;
-        displayController.render(gameBoard.gameBoardArray);
-        // execute randomComputerMove is the Computer play option is selected at start game
-        // if (playAgainstComputer.classList.contains("active-play-mode")) {
-        //   randomComputerMove();
-        // }
-      } else {
-        return;
-      }
-    });
-
-    item8.addEventListener("click", function() {
-      if (gameBoard.gameBoardArray[8] === "") {
-        changeMarker();
-        gameBoard.gameBoardArray[8] = marker;
-        displayController.render(gameBoard.gameBoardArray);
-        // execute randomComputerMove is the Computer play option is selected at start game
-        // if (playAgainstComputer.classList.contains("active-play-mode")) {
-        //   randomComputerMove();
-        // }
-      } else {
-        return;
-      }
-    });
-
+      item1.addEventListener("click", function() {
+        if (gameBoard.gameBoardArray[1] === "") {
+          changeMarker();
+          gameBoard.gameBoardArray[1] = marker;
+          displayController.render(gameBoard.gameBoardArray);
+          displayController.isTheWinner(gameBoard.gameBoardArray);
+          if (player1.isWinner == true || player2.isWinner == true || emptyArraySpots() == false) {
+            displayController.winnerMessage(gameBoard.gameBoardArray);
+            resetGameRoundNext.addEventListener("click", function() {
+              decidePlayerOrRandomMove();
+            });
+          } else {
+            decidePlayerOrRandomMove();
+          }
+        } else {
+          return;
+        }
+      });
+  
+      item2.addEventListener("click", function() {
+        if (gameBoard.gameBoardArray[2] === "") {
+          changeMarker();
+          gameBoard.gameBoardArray[2] = marker;
+          displayController.render(gameBoard.gameBoardArray);
+          displayController.isTheWinner(gameBoard.gameBoardArray);
+          if (player1.isWinner == true || player2.isWinner == true || emptyArraySpots() == false) {
+            displayController.winnerMessage(gameBoard.gameBoardArray);
+            resetGameRoundNext.addEventListener("click", function() {
+              decidePlayerOrRandomMove();
+            });
+          } else {
+            decidePlayerOrRandomMove();
+          }
+        } else {
+          return;
+        }
+      });
     
+      item3.addEventListener("click", function() {
+        if (gameBoard.gameBoardArray[3] === "") {
+          changeMarker();
+          gameBoard.gameBoardArray[3] = marker;
+          displayController.render(gameBoard.gameBoardArray);
+          displayController.isTheWinner(gameBoard.gameBoardArray);
+          if (player1.isWinner == true || player2.isWinner == true || emptyArraySpots() == false) {
+            displayController.winnerMessage(gameBoard.gameBoardArray);
+            resetGameRoundNext.addEventListener("click", function() {
+              decidePlayerOrRandomMove();
+            });
+          } else {
+            decidePlayerOrRandomMove();
+          }
+        } else {
+          return;
+        }
+      });
+  
+      item4.addEventListener("click", function() {
+        if (gameBoard.gameBoardArray[4] === "") {
+          changeMarker();
+          gameBoard.gameBoardArray[4] = marker;
+          displayController.render(gameBoard.gameBoardArray);
+          displayController.isTheWinner(gameBoard.gameBoardArray);
+          if (player1.isWinner == true || player2.isWinner == true || emptyArraySpots() == false) {
+            displayController.winnerMessage(gameBoard.gameBoardArray);
+            resetGameRoundNext.addEventListener("click", function() {
+              decidePlayerOrRandomMove();
+            });
+          } else {
+            decidePlayerOrRandomMove();
+          }
+        } else {
+          return;
+        }
+      });
+  
+      item5.addEventListener("click", function() {
+        if (gameBoard.gameBoardArray[5] === "") {
+          changeMarker();
+          gameBoard.gameBoardArray[5] = marker;
+          displayController.render(gameBoard.gameBoardArray);
+          displayController.isTheWinner(gameBoard.gameBoardArray);
+          if (player1.isWinner == true || player2.isWinner == true || emptyArraySpots() == false) {
+            displayController.winnerMessage(gameBoard.gameBoardArray);
+            resetGameRoundNext.addEventListener("click", function() {
+              decidePlayerOrRandomMove();
+            });
+          } else {
+            decidePlayerOrRandomMove();
+          }
+        } else {
+          return;
+        }
+      });
+  
+      item6.addEventListener("click", function() {
+        if (gameBoard.gameBoardArray[6] === "") {
+          changeMarker();
+          gameBoard.gameBoardArray[6] = marker;
+          displayController.render(gameBoard.gameBoardArray);
+          displayController.isTheWinner(gameBoard.gameBoardArray);
+          if (player1.isWinner == true || player2.isWinner == true || emptyArraySpots() == false) {
+            displayController.winnerMessage(gameBoard.gameBoardArray);
+            resetGameRoundNext.addEventListener("click", function() {
+              decidePlayerOrRandomMove();
+            });
+          } else {
+            decidePlayerOrRandomMove();
+          }
+        } else {
+          return;
+        }
+      });
+  
+      item7.addEventListener("click", function() {
+        if (gameBoard.gameBoardArray[7] === "") {
+          changeMarker();
+          gameBoard.gameBoardArray[7] = marker;
+          displayController.render(gameBoard.gameBoardArray);
+          displayController.isTheWinner(gameBoard.gameBoardArray);
+          if (player1.isWinner == true || player2.isWinner == true || emptyArraySpots() == false) {
+            displayController.winnerMessage(gameBoard.gameBoardArray);
+            resetGameRoundNext.addEventListener("click", function() {
+              decidePlayerOrRandomMove();
+            });
+          } else {
+            decidePlayerOrRandomMove();
+          }
+        } else {
+          return;
+        }
+      });
+  
+      item8.addEventListener("click", function() {
+        if (gameBoard.gameBoardArray[8] === "") {
+          changeMarker();
+          gameBoard.gameBoardArray[8] = marker;
+          displayController.render(gameBoard.gameBoardArray);
+          displayController.isTheWinner(gameBoard.gameBoardArray);
+          if (player1.isWinner == true || player2.isWinner == true || emptyArraySpots() == false) {
+            displayController.winnerMessage(gameBoard.gameBoardArray);
+            resetGameRoundNext.addEventListener("click", function() {
+              decidePlayerOrRandomMove();
+            });
+          } else {
+            decidePlayerOrRandomMove();
+          }
+        } else {
+          return;
+        }
+      });
 
-    /*
-    7.1 Start by just getting the computer to make a random legal move.
-
-    check if player or computer is pressed at new game. check with active-play-mode class
-    if player is pressed execute normally like below
-    else if marker == "O" && isComputer {
-      let randomnumber = (0-8);
-      gameBoard.gameBoardArray[randomnumber] random that are empty that gameBoard.gameBoardArray[?][?] = marker;
-    }
-    */
-
-
+    };
   };
 
   const decideFirstMove = function() {
@@ -580,13 +614,10 @@ const displayController = (() => {
     };
   })();
 
-
-
   return {
     render,
     decideFirstMove,
     addMark,
-    // new
     isTheWinner,
     winnerMessage,
     resetScores
@@ -633,28 +664,8 @@ const player = (name, marker, isPlayerTurn, isPlayerFirstMove) => {
 let player1 = player("Player 1", "X", true, true);
 let player2 = player("Player 2", "O", false, false);
 
-displayController.render(gameBoard.gameBoardArray);
 displayController.decideFirstMove();
-// displayController.addMark();
 displayController.resetScores();
-
-// Step 5
-
-
-
-
-/*
-7.  Optional - If you’re feeling ambitious create an AI 
-    so that a player can play against the computer! 
-
-    7.1 Start by just getting the computer to make a random legal move.
-    7.2 Once you’ve gotten that, work on making the computer smart. 
-        It is possible to create an unbeatable AI using the minimax algorithm 
-        (read about it here, some googling will help you out with this one)
-    7.3 If you get this running definitely come show it off in the chatroom. 
-        It’s quite an accomplishment!
-*/
-
 
 
 /*
